@@ -1,12 +1,16 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/client";
+
+
 import Image from "next/image";
 import logo from "../Public/Logo.png"
 
 export default function Navigationbar() {
   const router = useRouter();
+
+  const supabase = createClient(); // call the function to get a client
 
   const signOut = async () => {
     await supabase.auth.signOut();
