@@ -10,6 +10,7 @@ type OrganizationWithRole = {
   name: string;
   created_at: string;
   role: string;
+  payment_class?: string;
 };
 
 export default function OrganizationsPage() {
@@ -21,42 +22,56 @@ export default function OrganizationsPage() {
 
   useEffect(() => {
     const fetchOrganizations = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      try {
+        const {
+          data: { user },
+          error: userError,
+        } = await supabase.auth.getUser();
 
-      if (!user) {
-        router.push("/login");
-        return;
+        if (userError) {
+          console.error("Error fetching user:", userError);
+          router.push("/login");
+          return;
+        }
+
+        if (!user) {
+          router.push("/login");
+          return;
+        }
+
+        const { data, error } = await supabase
+          .from("organization_memberships")
+          .select(`
+            role,
+            payment_class,
+            organization:organizations (
+              id,
+              name,
+              created_at
+            )
+          `)
+          .eq("user_id", user.id);
+
+        if (error) {
+          console.error("Error fetching organizations:", error);
+          console.error("Error details:", error.details, error.hint, error.message);
+        } else {
+          const orgs =
+            data?.map((row: any) => ({
+              id: row.organization.id,
+              name: row.organization.name,
+              created_at: row.organization.created_at,
+              role: row.role,
+              payment_class: row.payment_class,
+            })) || [];
+
+          setOrganizations(orgs);
+        }
+      } catch (err) {
+        console.error("Unexpected error:", err);
+      } finally {
+        setLoading(false);
       }
-
-      const { data, error } = await supabase
-        .from("organization_memberships")
-        .select(`
-          role,
-          organization:organizations (
-            id,
-            name,
-            created_at
-          )
-        `)
-        .eq("user_id", user.id);
-
-      if (error) {
-        console.error("Error fetching organizations:", error);
-      } else {
-        const orgs =
-          data?.map((row: any) => ({
-            id: row.organization.id,
-            name: row.organization.name,
-            created_at: row.organization.created_at,
-            role: row.role,
-          })) || [];
-
-        setOrganizations(orgs);
-      }
-
-      setLoading(false);
     };
 
     fetchOrganizations();
@@ -149,6 +164,12 @@ export default function OrganizationsPage() {
               <p style={{ fontSize: "0.85rem", color: "#666" }}>
                 Created {new Date(org.created_at).toLocaleDateString()}
               </p>
+              
+              {org.payment_class && (
+                <p style={{ fontSize: "0.85rem", color: "#666", marginTop: "0.5rem" }}>
+                  Payment Class: {org.payment_class}
+                </p>
+              )}
             </div>
           ))}
         </div>
