@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
-import AdminSidebar from "@/components/AdminSidebar";
 
 export default function OrganizationSettingsPage() {
   const supabase = createClient();
@@ -151,134 +150,129 @@ export default function OrganizationSettingsPage() {
   }
 
   return (
-    <>
-      <AdminSidebar organizationId={organizationId} />
+    <div
+      style={{
+        padding: "2rem",
+        maxWidth: "800px",
+        margin: "0 auto",
+      }}
+    >
+      <h1 style={{ fontSize: "2rem", fontWeight: 600, marginBottom: "0.5rem" }}>
+        Organization Settings
+      </h1>
+      <p style={{ color: "#666", marginBottom: "2rem" }}>
+        Manage your organization details and settings
+      </p>
 
+      {/* Organization Name */}
       <div
         style={{
-          padding: "2rem",
-          maxWidth: "800px",
-          margin: "0 auto",
-          marginLeft: "72px",
+          backgroundColor: "#fff",
+          border: "1px solid #e5e7eb",
+          borderRadius: "8px",
+          padding: "1.5rem",
+          marginBottom: "1.5rem",
         }}
       >
-        <h1 style={{ fontSize: "2rem", fontWeight: 600, marginBottom: "0.5rem" }}>
-          Organization Settings
-        </h1>
-        <p style={{ color: "#666", marginBottom: "2rem" }}>
-          Manage your organization details and settings
+        <h2 style={{ fontSize: "1.25rem", fontWeight: 600, marginBottom: "1rem" }}>
+          Organization Name
+        </h2>
+        <input
+          type="text"
+          value={newOrgName}
+          onChange={(e) => setNewOrgName(e.target.value)}
+          style={{
+            width: "100%",
+            padding: "0.5rem",
+            border: "1px solid #d1d5db",
+            borderRadius: "6px",
+            fontSize: "1rem",
+            marginBottom: "1rem",
+          }}
+        />
+        <Button onClick={handleSaveChanges} disabled={saving || newOrgName === orgName}>
+          {saving ? "Saving..." : "Save Changes"}
+        </Button>
+      </div>
+
+      {/* Invite Code */}
+      <div
+        style={{
+          backgroundColor: "#fff",
+          border: "1px solid #e5e7eb",
+          borderRadius: "8px",
+          padding: "1.5rem",
+          marginBottom: "1.5rem",
+        }}
+      >
+        <h2 style={{ fontSize: "1.25rem", fontWeight: 600, marginBottom: "1rem" }}>
+          Invite Code
+        </h2>
+        <p style={{ color: "#666", marginBottom: "1rem" }}>
+          Share this code with others to let them join your organization
         </p>
-
-        {/* Organization Name */}
         <div
           style={{
-            backgroundColor: "#fff",
-            border: "1px solid #e5e7eb",
-            borderRadius: "8px",
-            padding: "1.5rem",
-            marginBottom: "1.5rem",
+            display: "flex",
+            gap: "1rem",
+            alignItems: "center",
+            marginBottom: "1rem",
           }}
         >
-          <h2 style={{ fontSize: "1.25rem", fontWeight: 600, marginBottom: "1rem" }}>
-            Organization Name
-          </h2>
-          <input
-            type="text"
-            value={newOrgName}
-            onChange={(e) => setNewOrgName(e.target.value)}
+          <code
             style={{
-              width: "100%",
-              padding: "0.5rem",
-              border: "1px solid #d1d5db",
+              padding: "0.5rem 1rem",
+              backgroundColor: "#f3f4f6",
               borderRadius: "6px",
-              fontSize: "1rem",
-              marginBottom: "1rem",
-            }}
-          />
-          <Button onClick={handleSaveChanges} disabled={saving || newOrgName === orgName}>
-            {saving ? "Saving..." : "Save Changes"}
-          </Button>
-        </div>
-
-        {/* Invite Code */}
-        <div
-          style={{
-            backgroundColor: "#fff",
-            border: "1px solid #e5e7eb",
-            borderRadius: "8px",
-            padding: "1.5rem",
-            marginBottom: "1.5rem",
-          }}
-        >
-          <h2 style={{ fontSize: "1.25rem", fontWeight: 600, marginBottom: "1rem" }}>
-            Invite Code
-          </h2>
-          <p style={{ color: "#666", marginBottom: "1rem" }}>
-            Share this code with others to let them join your organization
-          </p>
-          <div
-            style={{
-              display: "flex",
-              gap: "1rem",
-              alignItems: "center",
-              marginBottom: "1rem",
+              fontSize: "1.1rem",
+              fontWeight: 600,
+              letterSpacing: "0.05em",
             }}
           >
-            <code
-              style={{
-                padding: "0.5rem 1rem",
-                backgroundColor: "#f3f4f6",
-                borderRadius: "6px",
-                fontSize: "1.1rem",
-                fontWeight: 600,
-                letterSpacing: "0.05em",
-              }}
-            >
-              {inviteCode}
-            </code>
-            <Button
-              variant="outline"
-              onClick={async () => {
-                await navigator.clipboard.writeText(inviteCode);
-                alert("Invite code copied to clipboard!");
-              }}
-            >
-              Copy
-            </Button>
-          </div>
-          <Button variant="outline" onClick={handleRegenerateInviteCode} disabled={saving}>
-            Regenerate Code
-          </Button>
-        </div>
-
-        {/* Danger Zone */}
-        <div
-          style={{
-            backgroundColor: "#fff",
-            border: "2px solid #ef4444",
-            borderRadius: "8px",
-            padding: "1.5rem",
-          }}
-        >
-          <h2 style={{ fontSize: "1.25rem", fontWeight: 600, marginBottom: "1rem", color: "#ef4444" }}>
-            Danger Zone
-          </h2>
-          <p style={{ color: "#666", marginBottom: "1rem" }}>
-            Once you delete an organization, there is no going back. All members will be removed and all data will be lost.
-          </p>
+            {inviteCode}
+          </code>
           <Button
             variant="outline"
-            onClick={handleDeleteOrganization}
-            disabled={saving}
-            style={{
-              borderColor: "#ef4444",
-              color: "#ef4444",
+            onClick={async () => {
+              await navigator.clipboard.writeText(inviteCode);
+              alert("Invite code copied to clipboard!");
             }}
           >
-            Delete Organization
+            Copy
           </Button>
         </div>
+        <Button variant="outline" onClick={handleRegenerateInviteCode} disabled={saving}>
+          Regenerate Code
+        </Button>
       </div>
-    </>
+
+      {/* Danger Zone */}
+      <div
+        style={{
+          backgroundColor: "#fff",
+          border: "2px solid #ef4444",
+          borderRadius: "8px",
+          padding: "1.5rem",
+        }}
+      >
+        <h2 style={{ fontSize: "1.25rem", fontWeight: 600, marginBottom: "1rem", color: "#ef4444" }}>
+          Danger Zone
+        </h2>
+        <p style={{ color: "#666", marginBottom: "1rem" }}>
+          Once you delete an organization, there is no going back. All members will be removed and all data will be lost.
+        </p>
+        <Button
+          variant="outline"
+          onClick={handleDeleteOrganization}
+          disabled={saving}
+          style={{
+            borderColor: "#ef4444",
+            color: "#ef4444",
+          }}
+        >
+          Delete Organization
+        </Button>
+      </div>
+    </div>
   );
 }

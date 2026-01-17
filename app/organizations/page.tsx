@@ -249,19 +249,29 @@ export default function OrganizationsPage() {
                   {org.name.charAt(0).toUpperCase()}
                 </div>
 
-              <p style={{ fontSize: "0.85rem", color: "#666" }}>
-                Created {new Date(org.created_at).toLocaleDateString()}
-              </p>
-              
-              {org.payment_class && (
-                <p style={{ fontSize: "0.85rem", color: "#666", marginTop: "0.5rem" }}>
-                  Payment Class: {org.payment_class}
+                <h3 style={{ 
+                  fontSize: "1.25rem", 
+                  fontWeight: 600, 
+                  color: "#1e293b",
+                  marginBottom: "0.5rem"
+                }}>
+                  {org.name}
+                </h3>
+
+                <p style={{ fontSize: "0.85rem", color: "#666" }}>
+                  Created {new Date(org.created_at).toLocaleDateString()}
                 </p>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
+                
+                {org.payment_class && (
+                  <p style={{ fontSize: "0.85rem", color: "#666", marginTop: "0.5rem" }}>
+                    Payment Class: {org.payment_class}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

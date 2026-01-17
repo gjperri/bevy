@@ -116,7 +116,7 @@ export default function JoinOrganizationPage() {
         <Button
           onClick={handleJoin}
           size="lg"
-          style={{ backgroundColor: "#6b46c1", color: "#fff" }}
+          style={{ backgroundColor: "#448bfc", color: "#fff" }}
           disabled={loading}
         >
           {loading ? "Joining..." : "Join Organization"}
