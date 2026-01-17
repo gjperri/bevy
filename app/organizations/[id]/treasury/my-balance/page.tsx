@@ -221,7 +221,7 @@ export default function MyBalancePage() {
               </p>
             </div>
             <Button
-              onClick={() => alert("Payment feature coming soon!")}
+              onClick={() => window.open("https://buy.stripe.com/test_9B67sL2Z0gyUgYObtY4F200")}
               style={{
                 backgroundColor: "#448bfc",
                 color: "white",
