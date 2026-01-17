@@ -1,8 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { Users, Settings, DollarSign } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Users, Settings, DollarSign, Calendar } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
 type AdminSidebarProps = {
   organizationId: string;
@@ -14,25 +15,66 @@ export default function AdminSidebar({
   borderColor = "#e5e7eb",
 }: AdminSidebarProps) {
   const router = useRouter();
+  const supabase = createClient();
   const [hovered, setHovered] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const checkAdminStatus = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) return;
+
+      const { data: membership } = await supabase
+        .from("organization_memberships")
+        .select("role")
+        .eq("organization_id", organizationId)
+        .eq("user_id", user.id)
+        .single();
+
+      setIsAdmin(membership?.role === "admin");
+    };
+
+    checkAdminStatus();
+  }, [supabase, organizationId]);
 
   const navbarHeight = 64;
   const collapsedWidth = 55;
   const expandedWidth = 180;
 
-  const menuItems = [
-    { title: "Members", icon: Users, path: `/organizations/${organizationId}` },
-    {
-      title: "Settings",
-      icon: Settings,
-      path: `/organizations/${organizationId}/settings`,
+  const allMenuItems = [
+    { 
+      title: "Members", 
+      icon: Users, 
+      path: `/organizations/${organizationId}`, 
+      adminOnly: false 
     },
     {
       title: "Finances",
       icon: DollarSign,
-      path: `/organizations/${organizationId}/treasury`,
+      path: isAdmin 
+        ? `/organizations/${organizationId}/treasury` 
+        : `/organizations/${organizationId}/treasury/my-balance`,
+      adminOnly: false,
+    },
+    {
+      title: "Calendar",
+      icon: Calendar,
+      path: `/organizations/${organizationId}/calendar`,
+      adminOnly: false,
+    },
+    {
+      title: "Settings",
+      icon: Settings,
+      path: `/organizations/${organizationId}/settings`,
+      adminOnly: true,
     },
   ];
+
+  // Filter menu items based on admin status
+  const menuItems = allMenuItems.filter(item => !item.adminOnly || isAdmin);
 
   return (
     <aside

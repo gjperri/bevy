@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 import Image from "next/image";
-import logo from "../Public/BlueLogo.png";
+import logo from "../Public/guild.png";
 import profileIcon from "../Public/profile.png";
 
 type Org = {
@@ -21,6 +21,9 @@ export default function Navigationbar() {
   const [orgs, setOrgs] = useState<Org[]>([]);
   const [orgDropdownOpen, setOrgDropdownOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+
+  const orgTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const profileTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const fetchProfileAndOrgs = async () => {
@@ -56,23 +59,51 @@ export default function Navigationbar() {
     router.push("/login");
   };
 
+  const handleOrgMouseEnter = () => {
+    if (orgTimeoutRef.current) {
+      clearTimeout(orgTimeoutRef.current);
+    }
+    setOrgDropdownOpen(true);
+  };
+
+  const handleOrgMouseLeave = () => {
+    orgTimeoutRef.current = setTimeout(() => {
+      setOrgDropdownOpen(false);
+    }, 300);
+  };
+
+  const handleProfileMouseEnter = () => {
+    if (profileTimeoutRef.current) {
+      clearTimeout(profileTimeoutRef.current);
+    }
+    setProfileDropdownOpen(true);
+  };
+
+  const handleProfileMouseLeave = () => {
+    profileTimeoutRef.current = setTimeout(() => {
+      setProfileDropdownOpen(false);
+    }, 300);
+  };
+
   return (
     <nav
       style={{
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: "0.6rem 0.6rem",
+        padding: "0.6rem 3rem",
         borderBottom: "1px solid #ddd",
         backgroundColor: "#fff",
-        zIndex: 100,
+        zIndex: 1000,
+        position: "sticky",
+        top: 0,
       }}
     >
       {/* LEFT */}
       <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-        <Image src={logo} alt="Bevy logo" width={45} height={45} priority />
+        <Image src={logo} alt="Bevy logo" width={80} height={45} priority />
         <span style={{ fontWeight: 500, fontSize: "1.4rem", fontFamily: "revert" }}>
-          Bevy
+          
         </span>
       </div>
 
@@ -89,8 +120,8 @@ export default function Navigationbar() {
         {/* Organizations */}
         <div
           style={{ position: "relative" }}
-          onMouseEnter={() => setOrgDropdownOpen(true)}
-          onMouseLeave={() => setOrgDropdownOpen(false)}
+          onMouseEnter={handleOrgMouseEnter}
+          onMouseLeave={handleOrgMouseLeave}
         >
           <button
             onClick={() => router.push("/organizations")}
@@ -118,6 +149,7 @@ export default function Navigationbar() {
                 boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
                 minWidth: "220px",
                 overflow: "hidden",
+                zIndex: 1001,
               }}
             >
               {orgs.length === 0 ? (
@@ -167,8 +199,8 @@ export default function Navigationbar() {
         {/* Profile */}
         <div
           style={{ position: "relative" }}
-          onMouseEnter={() => setProfileDropdownOpen(true)}
-          onMouseLeave={() => setProfileDropdownOpen(false)}
+          onMouseEnter={handleProfileMouseEnter}
+          onMouseLeave={handleProfileMouseLeave}
         >
           {/* CLICKABLE ICON */}
           <div
@@ -197,6 +229,7 @@ export default function Navigationbar() {
                 boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
                 minWidth: "180px",
                 overflow: "hidden",
+                zIndex: 1001,
               }}
             >
               <p style={{ padding: "0.75rem 1rem", fontWeight: 500 }}>

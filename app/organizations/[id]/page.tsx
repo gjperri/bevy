@@ -193,9 +193,6 @@ export default function OrganizationPage() {
 
   return (
     <>
-      {/* Admin Sidebar */}
-      {isAdmin && <AdminSidebar organizationId={organizationId} />}
-
       {/* Confirmation Dialog */}
       {confirmDialog && confirmDialog.show && (
         <div
@@ -238,7 +235,7 @@ export default function OrganizationPage() {
               color: "#448bfc",
               fontSize: "1.5rem"
             }}>
-              ⚠️
+              !
             </div>
             <h2 style={{ 
               fontSize: "1.5rem", 
@@ -315,9 +312,8 @@ export default function OrganizationPage() {
       <div
         style={{
           minHeight: "100vh",
-          background: "linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%)",
+          background: "#ffffff",
           padding: "3rem 2rem",
-          marginLeft: isAdmin ? "72px" : "0",
         }}
       >
         <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
@@ -342,12 +338,8 @@ export default function OrganizationPage() {
               </h1>
               <p style={{ 
                 color: "#64748b",
-                fontSize: "1rem",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem"
+                fontSize: "1rem"
               }}>
-                <span>👥</span>
                 {members.length} {members.length === 1 ? 'member' : 'members'}
               </p>
             </div>
@@ -371,7 +363,7 @@ export default function OrganizationPage() {
                   gap: "0.5rem"
                 }}
               >
-                {copiedCode ? "✓ Copied!" : "📋 Copy Invite Code"}
+                {copiedCode ? "Copied!" : "Copy Invite Code"}
               </Button>
             )}
           </div>

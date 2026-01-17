@@ -1,3 +1,7 @@
+##Brand Color
+- #448bfc
+
+
 ## Development Steps
 1. Database schema - Create tables in Supabase
 2. Authentication - Sign up/login pages
