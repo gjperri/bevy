@@ -56,7 +56,7 @@ export default function Home() {
           <div className="text-center space-y-8">
             <div className="inline-block">
               <h1 className="text-7xl lg:text-8xl font-extrabold text-white mb-2 tracking-tight">
-                Bevy
+                Guild
               </h1>
               <div className="h-2 bg-gradient-to-r from-[#60a5fa] to-[#93c5fd] rounded-full"></div>
             </div>
@@ -174,7 +174,7 @@ export default function Home() {
             Ready to simplify your finances?
           </h2>
           <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
-            Join hundreds of organizations that have ditched spreadsheets and switched to Bevy
+            Join hundreds of organizations that have ditched spreadsheets and switched to Guild
           </p>
           <Link href="/signup">
             <Button size="lg" className="bg-white text-[#448bfc] hover:bg-gray-100 text-lg px-12 py-6 rounded-full shadow-xl hover:shadow-2xl transition-all">
@@ -190,7 +190,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-400 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-sm">© 2025 Bevy. Secure payments powered by Stripe.</p>
+          <p className="text-sm">© 2025 Guild. Secure payments powered by Stripe.</p>
         </div>
       </footer>
     </div>

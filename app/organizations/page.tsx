@@ -84,7 +84,7 @@ export default function OrganizationsPage() {
   return (
     <div style={{ 
       minHeight: "100vh",
-      background: "linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%)",
+      background: "linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%)",
       padding: "3rem 2rem"
     }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
@@ -158,16 +158,25 @@ export default function OrganizationsPage() {
             <div style={{
               width: "64px",
               height: "64px",
-              backgroundColor: "#eff6ff",
-              borderRadius: "50%",
+              backgroundColor: "white",
+              borderRadius: "12px",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               margin: "0 auto 1.5rem",
-              color: "#448bfc",
-              fontSize: "2rem"
+              border: "1px solid #e2e8f0",
+              overflow: "hidden"
             }}>
-              🏢
+              <img 
+                src="/media/guild-logo.png" 
+                alt="Guild Logo"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                  padding: "8px"
+                }}
+              />
             </div>
             <p style={{ 
               color: "#64748b",
@@ -236,17 +245,25 @@ export default function OrganizationsPage() {
                 <div style={{
                   width: "48px",
                   height: "48px",
-                  backgroundColor: "#eff6ff",
+                  backgroundColor: "white",
                   borderRadius: "10px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   marginBottom: "1rem",
-                  color: "#448bfc",
-                  fontSize: "1.5rem",
-                  fontWeight: 600
+                  border: "1px solid #e2e8f0",
+                  overflow: "hidden"
                 }}>
-                  {org.name.charAt(0).toUpperCase()}
+                  <img 
+                    src="/media/guild-logo.png" 
+                    alt={org.name}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "contain",
+                      padding: "4px"
+                    }}
+                  />
                 </div>
 
                 <h3 style={{ 
