@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Users, Settings, DollarSign, Calendar, Megaphone, Car } from "lucide-react";
+import { Users, Settings, DollarSign, Calendar, Megaphone, Car, HandCoins } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 type AdminSidebarProps = {
@@ -65,6 +65,14 @@ export default function AdminSidebar({
       path: `/organizations/${organizationId}/calendar`,
       adminOnly: false,
     },
+    // --- NEW FUNDRAISING OPTION ---
+    {
+      title: "Fundraising",
+      icon: HandCoins,
+      path: `/organizations/${organizationId}/fundraising`,
+      adminOnly: true,
+    },
+    // ------------------------------
     {
       title: "Announcements",
       icon: Megaphone,
