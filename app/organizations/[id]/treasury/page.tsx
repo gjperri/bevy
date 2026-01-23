@@ -55,6 +55,16 @@ export default function TreasuryPage() {
               <Button
                 onClick={() =>
                   router.push(
+                    `/organizations/${organizationId}/treasury/bank-details`
+                  )
+                }
+                style={treasuryStyles.primaryButton}
+              >
+                Bank Details
+              </Button>
+              <Button
+                onClick={() =>
+                  router.push(
                     `/organizations/${organizationId}/treasury/my-balance`
                   )
                 }
